@@ -5,6 +5,7 @@ import {
   deleteNoteInDb,
   updateNoteInDb,
   findSpecifikNoteInDb,
+  searchNoteByTitleInDb,
 } from "../models/notesModel.js";
 
 export const addNote = async (req, res) => {
@@ -66,9 +67,9 @@ export const getNotes = async (req, res) => {
 export const deleteNote = async (req, res) => {
   const { itemId } = req.body;
 
-  if (!itemId) {
-    return res.status(400).json({ message: "itemId saknas i bodyn" });
-  }
+  //   if (!itemId) {
+  //     return res.status(400).json({ message: "itemId saknas i bodyn" });
+  //   }
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
     if (deletedNoteCount === 0) {
@@ -87,9 +88,9 @@ export const deleteNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   const { title, text, itemId } = req.body;
-  if (!title || !text || !itemId) {
-    return res.status(400).json({ message: "title,text och itemId krävs!" });
-  }
+  //   if (!itemId) {
+  //     return res.status(400).json({ message: "itemId krävs!" });
+  //   }
   try {
     const result = await updateNoteInDb(
       // skickar in query vilket id som ska uppdaters,itemId
@@ -121,5 +122,32 @@ export const updateNote = async (req, res) => {
     res
       .status(500)
       .json({ message: "kunde inte uppdatera note", error: err.message });
+  }
+};
+
+export const findNote = async (req, res) => {
+  const { title } = req.query;
+  if (!title) {
+    return res
+      .status(404)
+      .json({ message: "ingen param inkluderad!, Det krävs!" });
+  }
+  try {
+    const result = await searchNoteByTitleInDb(title);
+    console.log("RESULT", result);
+    if (result.length === 0) {
+      return res.status(200).json({
+        // kör 200 för de är inget fel de är bara de att de inte
+        /// finns nån titel me de queryn jag satt in
+        message: "inga note/s hittades med den titeln!",
+        notes: result,
+      });
+    }
+
+    return res.status(200).json({ message: "note/s hittades!", notes: result });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "kunde inte hitta noten", error: err.messsage });
   }
 };

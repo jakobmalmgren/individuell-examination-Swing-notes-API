@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 8000;
 app.use("/api/user", userRouter);
 app.use("/api/notes", checkAuth, notesRouter);
 
+// gör en global errorhandler här me
 app.listen(PORT, () => {
   console.log(`servern kör på http://localhost:${PORT}`);
 });
