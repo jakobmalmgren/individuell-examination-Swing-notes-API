@@ -4,22 +4,29 @@ import {
   findNotesInDb,
   deleteNoteInDb,
   updateNoteInDb,
+  findSpecifikNoteInDb,
 } from "../models/notesModel.js";
 
 export const addNote = async (req, res) => {
   const userId = req.userId;
   const { title, text } = req.body;
+  if (!title || !text) {
+    return res
+      .status(400)
+      .json({ message: "både title och text måste finnas med" });
+  }
   const noteObj = {
     itemId: uuidv4(),
     title: title,
     text: text,
-    createdAt: new Date(),
-    modifiedAt: new Date(),
+    createdAt: new Date().toLocaleString("sv-SE"),
+    modifiedAt: new Date().toLocaleString("sv-SE"),
     userId: userId,
   };
   if (!userId) {
     return res.status(400).json({ message: "Användar-ID saknas i förfrågan" });
   }
+
   try {
     await insertNotesInDb(noteObj);
     res
@@ -40,7 +47,13 @@ export const getNotes = async (req, res) => {
   }
   try {
     const allNotes = await findNotesInDb(userId);
-    res
+    if (allNotes.length === 0) {
+      return res.status(200).json({
+        message: "du har inga notes för tillfället!",
+        notes: allNotes,
+      });
+    }
+    return res
       .status(200)
       .json({ message: "dina notes hämtades utan problem!", notes: allNotes });
   } catch (err) {
@@ -54,7 +67,7 @@ export const deleteNote = async (req, res) => {
   const { itemId } = req.body;
 
   if (!itemId) {
-    return res.status(400).json({ message: "item ID saknas i bodyn" });
+    return res.status(400).json({ message: "itemId saknas i bodyn" });
   }
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
@@ -66,8 +79,47 @@ export const deleteNote = async (req, res) => {
       .status(200)
       .json({ message: `noten med itemId:${itemId} raderat` });
   } catch (err) {
-    res.status(500).json({ message: "kunde inte deleta note" });
+    res
+      .status(500)
+      .json({ message: "kunde inte deleta note", error: err.message });
   }
 };
 
-export const updateNote = async (req, res) => {};
+export const updateNote = async (req, res) => {
+  const { title, text, itemId } = req.body;
+  if (!title || !text || !itemId) {
+    return res.status(400).json({ message: "title,text och itemId krävs!" });
+  }
+  try {
+    const result = await updateNoteInDb(
+      // skickar in query vilket id som ska uppdaters,itemId
+      { itemId: itemId },
+      // vad som ska uppdateras, och lägger till modified
+      {
+        $set: {
+          title: title,
+          text: text,
+          modifiedAt: new Date().toLocaleString("sv-SE"),
+        },
+      },
+      { multi: false }
+    );
+    if (result === 0) {
+      return res
+        .status(404)
+        .json({ message: "ingen note hittades att uppdatera" });
+    }
+
+    const updatedNote = await findSpecifikNoteInDb(itemId);
+    res.status(200).json({
+      message: `${itemId} uppdaterades korrekt!`,
+      newUpdatedVersion: updatedNote,
+    });
+    console.log("RESULT", result);
+    // 0 OM INGEN NOTE HITTAS, ANNARS 1
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "kunde inte uppdatera note", error: err.message });
+  }
+};
