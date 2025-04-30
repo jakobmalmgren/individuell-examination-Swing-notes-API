@@ -7,7 +7,7 @@ export const validateQuery = (schema) => {
           .status(400)
           .json({ message: "valideringsfel", error: error.details[0].message });
       }
-      req.body = value; // Tar bort extra inputs
+      req.query = value; // Tar bort extra inputs
       next();
     } catch (err) {
       return res

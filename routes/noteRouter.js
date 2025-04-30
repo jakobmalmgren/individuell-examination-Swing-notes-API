@@ -8,7 +8,6 @@ import {
   findNoteSchema,
 } from "../validators/noteValidators.js";
 import express from "express";
-const router = express.Router();
 import {
   addNote,
   getNotes,
@@ -16,6 +15,8 @@ import {
   updateNote,
   findNote,
 } from "../controllers/noteController.js";
+
+const router = express.Router();
 
 //HÄMTAR POSTS
 router.get("/", getNotes);

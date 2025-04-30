@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+
 export const hashedPassword = async (password) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -6,6 +7,7 @@ export const hashedPassword = async (password) => {
   } catch (err) {
     console.error("Fel vid hashning av lösenord: ", err);
     throw new Error("Fel vid hashning av lösenord.");
+    // kolla vad är throw new error o sen varför stor bokadtttav på ex Joi
   }
 };
 

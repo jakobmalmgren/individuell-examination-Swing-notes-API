@@ -11,11 +11,6 @@ import {
 export const addNote = async (req, res) => {
   const userId = req.userId;
   const { title, text } = req.body;
-  if (!title || !text) {
-    return res
-      .status(400)
-      .json({ message: "både title och text måste finnas med" });
-  }
   const noteObj = {
     itemId: uuidv4(),
     title: title,
@@ -66,10 +61,6 @@ export const getNotes = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
   const { itemId } = req.body;
-
-  //   if (!itemId) {
-  //     return res.status(400).json({ message: "itemId saknas i bodyn" });
-  //   }
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
     if (deletedNoteCount === 0) {
@@ -88,9 +79,6 @@ export const deleteNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   const { title, text, itemId } = req.body;
-  //   if (!itemId) {
-  //     return res.status(400).json({ message: "itemId krävs!" });
-  //   }
   try {
     const result = await updateNoteInDb(
       // skickar in query vilket id som ska uppdaters,itemId
@@ -127,11 +115,6 @@ export const updateNote = async (req, res) => {
 
 export const findNote = async (req, res) => {
   const { title } = req.query;
-  if (!title) {
-    return res
-      .status(404)
-      .json({ message: "ingen param inkluderad!, Det krävs!" });
-  }
   try {
     const result = await searchNoteByTitleInDb(title);
     console.log("RESULT", result);
@@ -148,6 +131,6 @@ export const findNote = async (req, res) => {
   } catch (err) {
     res
       .status(500)
-      .json({ message: "kunde inte hitta noten", error: err.messsage });
+      .json({ message: "kunde inte hitta noten", error: err.message });
   }
 };

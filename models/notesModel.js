@@ -3,7 +3,7 @@ const notesDb = new Datastore({
   filename: "./database/notes.db",
   autoload: true,
 });
-// hittar alla noted med de userId
+// hittar alla notes med de userId
 export const findNotesInDb = async (userId) => {
   return await notesDb.find({ userId: userId });
 };

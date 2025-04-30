@@ -12,7 +12,13 @@ const PORT = process.env.PORT || 8000;
 app.use("/api/user", userRouter);
 app.use("/api/notes", checkAuth, notesRouter);
 
-// gör en global errorhandler här me
+// global errorhandler
+
+app.use((err, req, res, next) => {
+  console.log("global error!:", err.stack || err);
+  res.status(err.status || 500).json({ message: err.message || "serverfel" });
+});
+
 app.listen(PORT, () => {
   console.log(`servern kör på http://localhost:${PORT}`);
 });
