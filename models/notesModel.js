@@ -9,7 +9,7 @@ export const findNotesInDb = async (userId) => {
 };
 //hittar den noten med specifika itemId genom queryn
 export const findSpecifikNoteInDb = async (itemId) => {
-  return await notesDb.find({ itemId: itemId });
+  return await notesDb.findOne({ itemId: itemId });
 };
 
 export const insertNotesInDb = async (noteObj) => {

@@ -60,7 +60,9 @@ export const getNotes = async (req, res) => {
 };
 
 export const deleteNote = async (req, res) => {
-  const { itemId } = req.body;
+  const { itemId } = req.params;
+  console.log("ehajaaaaaaaaaaaaaaaaaa", itemId);
+
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
     if (deletedNoteCount === 0) {

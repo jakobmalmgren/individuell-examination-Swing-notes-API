@@ -12,7 +12,7 @@ export const signUp = async (req, res) => {
       return res.status(409).json({ message: "användarnamn är upptaget" });
     }
     // funktion från bcrypt.js
-    const decodedPassword = await hashedPassword(password);
+    const decodedPassword = await hashedPassword(String(password));
     // funktion från userModels.js
     await createUserToDb(username, decodedPassword);
     res.status(201).json({
