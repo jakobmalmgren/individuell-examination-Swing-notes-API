@@ -267,8 +267,80 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *                   type: string
  *                   example: "Kunde inte uppdatera anteckningen"
  */
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// MÅSTE KOLLA DELETE FUNGERAR INTTE ME RÄTTTT KOD 400 ETTC...NÅR INTE DITT O HAR I SWAGGERN EX MEN KOMMER ALDRIG DIT..
+
+/**
+ * @swagger
+ * /api/notes/search:
+ *   get:
+ *     tags:
+ *       - Notes
+ *     summary: Sök efter en anteckning baserat på title
+ *     security:
+ *       - bearerAuth: []
+ *     description: Söker efter en anteckning i databasen baserat på `title` som skickas som query-param.
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "tvätta"
+ *         description: Titeln på anteckningen som ska sökas efter.
+ *     responses:
+ *       200:
+ *         description: Sökningen lyckades (även om inga träffar hittades)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "note/s hittades!"
+ *                 notes:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       itemId:
+ *                         type: string
+ *                       title:
+ *                         type: string
+ *                       text:
+ *                         type: string
+ *                       createdAt:
+ *                         type: string
+ *                       modifiedAt:
+ *                         type: string
+ *                       userId:
+ *                         type: string
+ *                       _id:
+ *                         type: string
+ *       400:
+ *         description: Du måste skicka in rätt data i query-parametern.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "valideringsfel"
+ *                 error:
+ *                   type: string
+ *                   example: "Du måste skicka med en title i query-parametern!"
+ *       500:
+ *         description: Tekniskt fel – kan bero på databas eller intern validering.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "kunde inte hitta noten"
+ */
+
 /**
  * @swagger
  * paths:
@@ -279,7 +351,7 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *       summary: "Radera en anteckning baserat på itemId"
  *       security:
  *         - bearerAuth: []
- *       description: "Raderar en anteckning från databasen baserat på det angivna itemId."
+ *       description: "Raderar en anteckning från databasen baserat på det angivna itemId. För att lyckas, måste itemId vara ett giltigt UUID i version 4."
  *       parameters:
  *         - in: path
  *           name: itemId
@@ -287,7 +359,7 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *           schema:
  *             type: string
  *             example: "a20ef43b-6cbd-45b0-b6fb-8a3183eb793a"
- *           description: "Det unika ID:t för anteckningen som ska raderas."
+ *           description: "Det unika ID:t för anteckningen som ska raderas. UUID i version 4, t.ex. '266d0295-c1d2-4802-89b2-00c25efbc1e6'."
  *       responses:
  *         200:
  *           description: "Anteckningen raderades framgångsrikt."
@@ -298,9 +370,9 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "noten med itemId 'a20ef43b-6cbd-45b0-b6fb-8a3183eb793a' raderades."
+ *                     example: "Anteckningen med itemId 'a20ef43b-6cbd-45b0-b6fb-8a3183eb793a' raderades."
  *         400:
- *           description: "Felaktig begäran, t.ex. om `itemId` inte är korrekt."
+ *           description: "Felaktig begäran, t.ex. om `itemId` inte är korrekt eller inte är ett giltigt UUID."
  *           content:
  *             application/json:
  *               schema:
@@ -308,7 +380,10 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "Felaktigt itemId format."
+ *                     example: "Valideringsfel"
+ *                   error:
+ *                     type: string
+ *                     example: "ItemId måste vara ett giltigt UUID i version 4. Exempel: 266d0295-c1d2-4802-89b2-00c25efbc1e6"
  *         404:
  *           description: "Anteckningen som ska raderas hittades inte."
  *           content:
@@ -318,9 +393,9 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "ID:t existerar inte"
+ *                     example: "ID:t existerar inte i databasen."
  *         500:
- *           description: "Serverfel."
+ *           description: "Serverfel eller att något gick fel vid validering."
  *           content:
  *             application/json:
  *               schema:
@@ -328,7 +403,7 @@ router.get("/search", validateQuery(findNoteSchema), findNote);
  *                 properties:
  *                   message:
  *                     type: string
- *                     example: "kunde inte deleta note"
+ *                     example: "Kunde inte radera anteckningen. Ett serverfel inträffade."
  */
 
 export default router;

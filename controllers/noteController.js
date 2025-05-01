@@ -61,8 +61,6 @@ export const getNotes = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
   const { itemId } = req.params;
-  console.log("ehajaaaaaaaaaaaaaaaaaa", itemId);
-
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
     if (deletedNoteCount === 0) {
@@ -116,7 +114,8 @@ export const updateNote = async (req, res) => {
 };
 
 export const findNote = async (req, res) => {
-  const { title } = req.query;
+  //   const { title } = req.query;
+  const { title } = req.validatedQuery;
   try {
     const result = await searchNoteByTitleInDb(title);
     console.log("RESULT", result);
