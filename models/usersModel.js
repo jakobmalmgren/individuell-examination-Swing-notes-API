@@ -1,5 +1,3 @@
-// måste kolla upp cb på vanliga nedb o async på nedb prpmises!!!!!!!!
-
 //USERS DATABAS
 
 import { v4 as uuidv4 } from "uuid";

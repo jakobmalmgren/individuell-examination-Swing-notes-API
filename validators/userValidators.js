@@ -1,5 +1,7 @@
 import Joi from "joi";
 
+//VALIDATORS FÖR USERS, OLIKA USERSCHEMAN
+
 export const logInSchema = Joi.object({
   username: Joi.required(),
   password: Joi.required(),

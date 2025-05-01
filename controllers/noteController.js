@@ -8,7 +8,9 @@ import {
   searchNoteByTitleInDb,
 } from "../models/notesModel.js";
 
+//LÄGGER TILL EN NOTE
 export const addNote = async (req, res) => {
+  //FÅR USERID FRÅN MIDDLEWAREN SÅ JAG KAN KOPPLA VARJE NOTE TILL DEN INLOGGADE ANVÄNDAREN
   const userId = req.userId;
   const { title, text } = req.body;
   const noteObj = {
@@ -35,6 +37,7 @@ export const addNote = async (req, res) => {
   }
 };
 
+//HÄMTAR NOTES
 export const getNotes = async (req, res) => {
   const userId = req.userId;
 
@@ -59,7 +62,9 @@ export const getNotes = async (req, res) => {
   }
 };
 
+//DELETAR NOTE
 export const deleteNote = async (req, res) => {
+  // FÅR IN ITEMID VIA PARAMS
   const { itemId } = req.params;
   try {
     const deletedNoteCount = await deleteNoteInDb(itemId);
@@ -77,6 +82,7 @@ export const deleteNote = async (req, res) => {
   }
 };
 
+//UPPDATERAR NOTE
 export const updateNote = async (req, res) => {
   const { title, text, itemId } = req.body;
   try {
@@ -113,6 +119,7 @@ export const updateNote = async (req, res) => {
   }
 };
 
+//HITTA EN SPECIFIK NOTE MED HJÄLP AV TITLE
 export const findNote = async (req, res) => {
   //   const { title } = req.query;
   const { title } = req.validatedQuery;

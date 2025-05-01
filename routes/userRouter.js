@@ -5,8 +5,10 @@ import { signUpSchema, logInSchema } from "../validators/userValidators.js";
 
 const router = express.Router();
 
+//SKAPAR ANVÄNDARE
 router.post("/signup", validateBody(signUpSchema), signUp);
 
+//LOGGAR IN ANVÄNDARE
 router.post("/login", validateBody(logInSchema), logIn);
 
 //SWAGGERS FÖR USEROUTES

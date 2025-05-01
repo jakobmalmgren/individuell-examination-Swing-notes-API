@@ -1,3 +1,4 @@
+// VALIDERAR QUERY OCH HÄR SKICKAS OLIKA JOI SCHEMAN IN
 export const validateQuery = (schema) => {
   return async (req, res, next) => {
     try {

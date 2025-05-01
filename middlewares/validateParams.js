@@ -1,3 +1,4 @@
+// VALIDERAR PARAMS OCH HÄR SKICKAS OLIKA JOI SCHEMAN IN
 export const validateParams = (schema) => {
   return async (req, res, next) => {
     try {

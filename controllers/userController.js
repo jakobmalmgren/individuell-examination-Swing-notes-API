@@ -2,6 +2,7 @@ import { hashedPassword, comparePassword } from "../bcrypt.js";
 import { createUserToDb, findUser } from "../models/usersModel.js";
 import jwt from "jsonwebtoken";
 
+//SKAPA EN ANVÄNDARE
 export const signUp = async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -23,6 +24,7 @@ export const signUp = async (req, res) => {
   }
 };
 
+// LOGGA IN ANVÄNDAREN
 export const logIn = async (req, res) => {
   const { username, password } = req.body;
   try {

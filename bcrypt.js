@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
 
+//SKAPAR OLIKA FUNKTIONER KOPPLADE TILL BCRYPT
+
 export const hashedPassword = async (password) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);

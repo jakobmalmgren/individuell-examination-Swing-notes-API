@@ -1,5 +1,7 @@
 import Joi from "joi";
 
+//VALIDATORS FÖR NOTES, OLIKA NOTESCHEMAN
+
 export const createNoteSchema = Joi.object({
   title: Joi.string().required(),
   text: Joi.string().required(),

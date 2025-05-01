@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 
+// KOLLAR OM MAN ÄR AUTHORISERAD
 export const checkAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {

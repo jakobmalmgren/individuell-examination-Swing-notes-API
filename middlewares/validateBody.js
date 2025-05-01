@@ -1,3 +1,4 @@
+//KOLLAR BODYN OCH VALIDERAR DEN OCH HÄR SKICKAS OLIKA JOI SCHEMAN IN
 export const validateBody = (schema) => {
   return async (req, res, next) => {
     try {
