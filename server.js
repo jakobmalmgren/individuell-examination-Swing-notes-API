@@ -42,7 +42,9 @@ const PORT = process.env.PORT || 8000;
 
 //ROUTES
 
+//SWAGGERROUTEN
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+//
 app.use("/api/user", userRouter);
 app.use("/api/notes", checkAuth, notesRouter);
 
@@ -55,4 +57,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`servern kör på http://localhost:${PORT}`);
+  //LÄNK TILL DOCS!=>
+  console.log(`docs finns på http://localhost:${PORT}/api/docs`);
 });

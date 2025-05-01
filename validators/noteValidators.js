@@ -3,8 +3,8 @@ import Joi from "joi";
 //VALIDATORS FÖR NOTES, OLIKA NOTESCHEMAN
 
 export const createNoteSchema = Joi.object({
-  title: Joi.string().required(),
-  text: Joi.string().required(),
+  title: Joi.string().required().max(50),
+  text: Joi.string().required().max(300),
 });
 
 export const updateNoteSchema = Joi.object({
