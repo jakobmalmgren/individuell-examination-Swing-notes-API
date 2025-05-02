@@ -55,6 +55,10 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ message: err.message || "serverfel" });
 });
 
+app.use((req, res) => {
+  res.status(404).json({ error: "Endpoint finns inte!" });
+});
+
 app.listen(PORT, () => {
   console.log(`servern kör på http://localhost:${PORT}`);
   //LÄNK TILL DOCS!=>
